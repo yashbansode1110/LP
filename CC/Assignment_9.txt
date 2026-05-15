@@ -1,0 +1,142 @@
+Assignment_9
+
+REPO:
+https://github.com/devesh-bhangale-7789/mern-blog       // Assign_9
+https://github.com/devesh-bhangale-7789/student-mana    // Assign_10
+https://github.com/devesh-bhangale-7789/ecomm-app       // Assign_11
+https://github.com/devesh-bhangale-7789/task-mana       // Assign_13
+https://github.com/devesh-bhangale-7789/todo-app        // Assign_14
+https://github.com/devesh-bhangale-7789/event-app       // Assign_15
+
+
+Host fronend and backend on same EC2 instance
+First create mondoDB cluster
+
+Create a free cluster
+1. Login MongoDB cloud
+    create new cluster
+2. New window of cluster
+    Choose free version
+    Keep current setting
+        Provider: AWS
+        Region: Mumbai, or any give
+        CLusterName: Cluster0
+    Disable sample Dataset
+    Enable Automatic security setup
+    Create Deployment: wait 1-3 minute
+3.  New window will popup
+    Create Database user
+        Ex. 
+            Username: blogadmin
+            Password: BlogApp123       // Here avoid special character at any cost, like "BlogApp@123"
+            If needed
+                Built-in Role: Read and write to any database
+                    This works for this project
+        IMP save Password somewhere, will need later for .env
+        Then click: Create Database user
+    Network access
+        "Enable Automatic security setup" will give connection access to only current IP,
+            so doesn't matter
+            If want to add another IP -> Network Access
+                Add IP
+        MongoDB may ask -> Where would you like to connect from?
+        Choose -> Allow Access From Anywhere OR 0.0.0.0/0
+        This is important because AWS EC2 IP changes.
+        But need to add from Anywhere
+            so -> Network access -> Add IP Address
+                Access List Entry: 0.0.0.0/0
+                Comment: AWS EC2 Access
+            After it activates (1-2 min), you may delete current IP
+    Choose Connection Method
+        Click green button "Choose a connection method"
+        Then choose -> Drivers, not Compass or something else
+        Select driver:
+            Driver: Node.js
+            Version: Stable API -> latest
+            Enable show SRV connection string and Password
+                After that copy that String
+                // mongodb+srv://blogadmin:BlogApp@123@cluster0.czxn1ax.mongodb.net/?appName=Cluster0
+
+                If not working, Manually Make Final Correct URI
+                Use this exact format:
+                    mongodb+srv://USERNAME:PASSWORD@cluster0.czxn1ax.mongodb.net/blogapp?retryWrites=true&w=majority
+                    Now replace:
+                        USERNAME
+                        PASSWORD
+                    Example:
+                        mongodb+srv://blogadmin:BlogApp123@cluster0.czxn1ax.mongodb.net/blogapp?retryWrites=true&w=majority
+                
+                Finally use automatically generated string by MongoDB with simple username and password
+                    // mongodb+srv://blogadmin:BlogApp123@cluster0.czxn1ax.mongodb.net/?appName=Cluster0
+
+
+Now AWS instance
+1. Login AWS
+2. New EC2 instance
+    Name: mern-blog-server
+    AMI: Ubuntu Server 24.04 LTS
+    Instance type: t2.micro, if not t3.micro
+    Key pair:
+        Name: mern-blog-Key
+        Type: RSA
+        Format: .pem
+        Download
+    Network setting:
+        Edit
+        Enable SSH, HTTP, HTTPS
+        Then add custom ports
+            Custom TPC, port: 5000          // backend
+            Custom TPC, port: 5173          // frontend
+    Memory: 8GB
+    Launch instace
+        Public IP: 13.60.205.38
+3. Browser EC2 instace terminal connect:
+        sudo apt update && sudo apt upgrade -y
+        sudo apt install git -y
+    // Node install, copy paste both at same time
+        curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+        sudo apt install -y nodejs
+    // Node verify
+        node -v
+        npm -v
+    // clone repo
+        git clone https://github.com/devesh-bhangale-7789/mern-blog.git
+        cd mern-blog
+    // backend setup
+        cd backend
+        npm install
+    // create backend .env
+        nano .env
+            // paste
+                PORT=5000
+                MONGODB_URI=YOUR_MONGODB_URI
+            // example
+                PORT=5000
+                MONGODB_URI=mongodb+srv://blogadmin:BlogApp123@cluster0.czxn1ax.mongodb.net/?appName=Cluster0
+            // save
+                CTRL + O
+                ENTER
+                CTRL + X
+    // start backend
+        npm run dev
+            // Success
+                MongoDB connected
+                Server running on port 5000
+    // Keep current terminal running, open new instance terminal via Browser
+    cd ~/mern-blog/frontend
+    npm install
+    nano .env
+        // paste
+        VITE_API_URL=http://YOUR_PUBLIC_EC2_IP:5000/api
+        // Example
+        VITE_API_URL=http://13.60.205.38:5000/api
+    npm run dev -- --host
+4. OPEN WEBSITE
+        http://YOUR_PUBLIC_EC2_IP:5173
+    Example
+        http://13.60.205.38:5173
+5. Stop
+    In both terminals of instance, press "CTRL + C" to close
+    Stop AWS EC2 Instance
+    Delete cluster
+        Project -> cluster -> 3 dots -> terminate OR delete deployment
