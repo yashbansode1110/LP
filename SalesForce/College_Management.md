@@ -1,28 +1,48 @@
 # College Management Lightning Application
 
-## Project Overview
-A Salesforce Lightning Application developed to manage **Student** and **Faculty** records with proper validation rules and a data validation system.
+## Project Title
+Develop a College Management Lightning Application to store and manage Student and Faculty records with validation rules.
 
 ---
 
 ## Objective
 
-This project includes:
+Create:
 
 - Student Object
 - Faculty Object
 - Validation Rules
 - Lightning App
-- Navigation Tabs
+- Tabs
 - Data Validation System
 
 ---
 
-## Features
+# Step 1: Create Student Object
 
-### Student Management
+Go to:
 
-Custom Student Object with the following fields:
+Setup → Object Manager → Create → Custom Object
+
+Enter the following details:
+
+| Field | Value |
+|------|------|
+| Label | Student |
+| Plural Label | Students |
+| Record Name | Student Name |
+
+Click **Save**.
+
+---
+
+# Step 2: Create Student Fields
+
+Go to:
+
+Student → Fields & Relationships → New
+
+Create the following fields:
 
 | Field Name | Data Type |
 |----------|----------|
@@ -32,7 +52,11 @@ Custom Student Object with the following fields:
 | Marks | Number |
 | Joining Date | Date |
 
-### Department Picklist Values
+---
+
+# Step 3: Department Picklist Values
+
+Add the following values:
 
 - Computer
 - IT
@@ -41,11 +65,35 @@ Custom Student Object with the following fields:
 - ENTC
 - Electrical
 
+Click **Save**.
+
 ---
 
-### Faculty Management
+# Step 4: Create Faculty Object
 
-Custom Faculty Object with the following fields:
+Go to:
+
+Setup → Object Manager → Create → Custom Object
+
+Enter the following details:
+
+| Field | Value |
+|------|------|
+| Label | Faculty |
+| Plural Label | Faculties |
+| Record Name | Faculty Name |
+
+Click **Save**.
+
+---
+
+# Step 5: Create Faculty Fields
+
+Go to:
+
+Faculty → Fields & Relationships → New
+
+Create the following fields:
 
 | Field Name | Data Type |
 |----------|----------|
@@ -56,11 +104,13 @@ Custom Faculty Object with the following fields:
 
 ---
 
-## Validation Rules
+# Step 6: Student Validation Rules
 
-### Student Validation Rules
+## 1. Roll Number Validation
 
-#### 1. Roll Number Validation
+**Rule Name:** `Roll_Number_Validation`
+
+**Formula:**
 
 ```salesforce
 Roll_Number__c <= 0
@@ -71,7 +121,11 @@ Roll Number must be greater than 0
 
 ---
 
-#### 2. Email Validation
+## 2. Email Validation
+
+**Rule Name:** `Email_Validation`
+
+**Formula:**
 
 ```salesforce
 NOT(CONTAINS(Email__c, "@"))
@@ -82,7 +136,11 @@ Email must contain @ symbol
 
 ---
 
-#### 3. Student Name Validation
+## 3. Student Name Validation
+
+**Rule Name:** `Student_Name_Validation`
+
+**Formula:**
 
 ```salesforce
 ISBLANK(Name)
@@ -93,7 +151,11 @@ Student name cannot be blank
 
 ---
 
-#### 4. Marks Validation
+## 4. Marks Validation
+
+**Rule Name:** `Marks_Validation`
+
+**Formula:**
 
 ```salesforce
 OR(
@@ -107,7 +169,11 @@ Marks should be between 0 and 100
 
 ---
 
-#### 5. Joining Date Validation
+## 5. Joining Date Validation
+
+**Rule Name:** `Joining_Date_Validation`
+
+**Formula:**
 
 ```salesforce
 Joining_Date__c > TODAY()
@@ -118,9 +184,13 @@ Joining Date cannot be future date
 
 ---
 
-### Faculty Validation Rules
+# Step 7: Faculty Validation Rules
 
-#### 1. Faculty Name Validation
+## 1. Faculty Name Validation
+
+**Rule Name:** `Faculty_Name_Validation`
+
+**Formula:**
 
 ```salesforce
 LEN(Name) < 3
@@ -131,7 +201,11 @@ Faculty Name must contain at least 3 characters
 
 ---
 
-#### 2. Faculty ID Validation
+## 2. Faculty ID Validation
+
+**Rule Name:** `Faculty_ID_Validation`
+
+**Formula:**
 
 ```salesforce
 Faculty_ID__c <= 0
@@ -142,13 +216,25 @@ Faculty ID must be greater than 0
 
 ---
 
-#### 3. Unique Faculty ID
+## 3. Make Faculty ID Unique
 
-Enable the **Unique** property for Faculty ID field.
+Go to:
+
+Faculty → Fields & Relationships → Faculty ID → Edit
+
+Enable:
+
+- Unique
+
+Click **Save**.
 
 ---
 
-#### 4. Salary Validation
+## 4. Salary Validation
+
+**Rule Name:** `Salary_Validation`
+
+**Formula:**
 
 ```salesforce
 OR(
@@ -162,7 +248,11 @@ Salary must be between 10,000 and 500,000
 
 ---
 
-#### 5. Faculty Joining Date Validation
+## 5. Faculty Joining Date Validation
+
+**Rule Name:** `Faculty_Joining_Date_Validation`
+
+**Formula:**
 
 ```salesforce
 Joining_Date__c > TODAY()
@@ -173,94 +263,44 @@ Joining Date cannot be future date
 
 ---
 
-## Setup Instructions
+# Step 8: Create Tabs
 
-### Step 1: Create Student Object
+## Problem Faced
 
-Navigate to:
+Student and Faculty objects were not appearing in Navigation Items.
 
-```bash
-Setup → Object Manager → Create → Custom Object
-```
+## Reason
 
-Enter:
+Tabs were not created.
 
-- Label: Student
-- Plural Label: Students
-- Record Name: Student Name
+## Solution
 
----
+Go to:
 
-### Step 2: Create Student Fields
-
-Navigate to:
-
-```bash
-Student → Fields & Relationships → New
-```
-
-Create all student fields listed above.
-
----
-
-### Step 3: Create Faculty Object
-
-Navigate to:
-
-```bash
-Setup → Object Manager → Create → Custom Object
-```
-
-Enter:
-
-- Label: Faculty
-- Plural Label: Faculties
-- Record Name: Faculty Name
-
----
-
-### Step 4: Create Faculty Fields
-
-Navigate to:
-
-```bash
-Faculty → Fields & Relationships → New
-```
-
-Create all faculty fields listed above.
-
----
-
-### Step 5: Create Tabs
-
-Navigate to:
-
-```bash
 Setup → Tabs → New
-```
 
 Create:
 
 - Student Tab
 - Faculty Tab
 
+Choose any tab style.
+
+Click **Save**.
+
 ---
 
-### Step 6: Create Lightning App
+# Step 9: Create Lightning App
 
-Navigate to:
+Go to:
 
-```bash
 Setup → App Manager → New Lightning App
-```
 
-App Name:
+Enter:
 
-```bash
-College Management
-```
+**App Name:** College Management
 
-Click:
+Continue clicking:
 
 - Next
 - Next
@@ -268,25 +308,62 @@ Click:
 
 ---
 
-### Step 7: Add Navigation Items
+# Step 10: Navigation Items Problem
 
-Add:
+## Error Faced
 
-- Students
-- Faculties
+Students and Faculties were not visible in Navigation Items.
 
-Then click:
+## Solution
 
-- Save & Finish
+After creating tabs:
+
+1. Refresh page
+2. Search Students
+3. Add using Arrow button
+4. Add Faculties
+5. Click Next
+6. Save & Finish
 
 ---
 
-## Validation Testing
+# Step 11: App Not Opening Problem
 
-### Student Test Cases
+## Error Faced
 
-| Test | Invalid Input | Expected Result |
-|------|--------------|----------------|
+College Management app not opening.
+
+## Reason
+
+Search was performed inside Setup instead of App Launcher.
+
+## Correct Method
+
+1. Click **9 Dots (App Launcher)**
+2. Search **College Management**
+3. Open the app
+
+---
+
+# Step 12: Final Working Output
+
+Successfully Working:
+
+- Student Object
+- Faculty Object
+- Validation Rules
+- Lightning App
+- Tabs
+- Record Forms
+
+---
+
+# Step 13: Validation Testing
+
+## Student Validation Tests
+
+| Test | Wrong Value | Expected Result |
+|------|------------|----------------|
 | Roll Number | 0 | Error |
 | Email | abcgmail.com | Error |
 | Marks | 120 | Error |
@@ -294,10 +371,10 @@ Then click:
 
 ---
 
-### Faculty Test Cases
+## Faculty Validation Tests
 
-| Test | Invalid Input | Expected Result |
-|------|--------------|----------------|
+| Test | Wrong Value | Expected Result |
+|------|------------|----------------|
 | Faculty Name | ab | Error |
 | Faculty ID | 0 | Error |
 | Duplicate Faculty ID | Existing ID | Error |
@@ -306,54 +383,17 @@ Then click:
 
 ---
 
-## Troubleshooting
+# Final Conclusion
 
-### Student / Faculty Not Showing in Navigation
+The College Management Lightning Application was successfully implemented with:
 
-**Cause:**  
-Tabs were not created.
-
-**Solution:**
-
-```bash
-Setup → Tabs → New
-```
-
-Create:
-
-- Student Tab
-- Faculty Tab
-
-Refresh the page and add navigation items again.
-
----
-
-### App Not Opening
-
-**Cause:**  
-Searching inside Setup instead of App Launcher.
-
-**Solution:**
-
-1. Open **App Launcher (9 Dots)**
-2. Search **College Management**
-3. Open the application
-
----
-
-## Final Output
-
-Successfully implemented:
-
-- Student Management System
-- Faculty Management System
+- Student Management
+- Faculty Management
 - Validation Rules
 - Unique Faculty ID Validation
 - Lightning App Navigation
-- Record Forms
 - Salesforce Lightning Experience
-
----
+- Data Accuracy Validation System
 
 ## Project Status
 
